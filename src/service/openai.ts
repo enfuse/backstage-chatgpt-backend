@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi,  }  from "openai";
+import {frameworkSamples} from './samples'
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -11,7 +12,6 @@ type ChatGPTUserInput = {
     styling : string
 
 }
-
 
 export const openAPIResponse =  async (input : ChatGPTUserInput) => {
     const templatedPrompt : string = generatePrompt(input)
@@ -42,50 +42,15 @@ const getSample = (prompt:string, framework:string, sample? :string)=>{
     if(sample){
         return prompt.replace('{framework_sample}', sample)
     }
-    const framework_samples = {
-        react : `const Button = ({ onClick, children }) => {
-            return (
-              <button type="button" onClick={onClick}>
-                {children}
-              </button>
-            );
-          };`,
-        angular: `@Component({
-                    selector:    'app-hero-list',
-                    templateUrl: './hero-list.component.html',
-                    providers:  [ HeroService ]
-                })
-            export class HeroListComponent implements OnInit {
-                heroes: Hero[] = [];
-                selectedHero: Hero | undefined;
-                constructor(private service: HeroService) { }
-                ngOnInit() {
-                this.heroes = this.service.getHeroes();
-                }
-                selectHero(hero: Hero) { this.selectedHero = hero; }
-            }`,
-        vue: `
-        export default {
-            data() {
-              return {
-                count: 0
-              }
-            },
-            template: \`
-              <button @click="count++">
-                You clicked me {{ count }} times.
-              </button>\`
-          }`
-    }
     switch(framework){
         case 'react':
-            return prompt.replace('{framework_sample}', framework_samples.react)
+            return prompt.replace('{framework_sample}', frameworkSamples.react)
         case 'angular':
-            return prompt.replace('{framework_sample}', framework_samples.angular)
+            return prompt.replace('{framework_sample}', frameworkSamples.angular)
         case 'vue':
-            return prompt.replace('{framework_sample}', framework_samples.vue)
+            return prompt.replace('{framework_sample}', frameworkSamples.vue)
         default:
-            return prompt.replace('{framework_sample}', framework_samples.react)
+            return prompt.replace('{framework_sample}', frameworkSamples.react)
     }
 }
 
