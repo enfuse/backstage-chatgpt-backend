@@ -9,8 +9,6 @@ type ChatGPTUserInput = {
     framework : string
     sample? : string
     functionality : string
-    styling : string
-
 }
 
 export const openAPIResponse =  async (input : ChatGPTUserInput) => {
@@ -37,7 +35,7 @@ const generatePrompt = (userInput : ChatGPTUserInput) =>{
  
 //Provides a sample to prompt from a predefined set of samples supporting
 //different frontend frameworks.
-//If sample is provided, then that one is use as a first option.
+//If sample is provided, then it is used as a first option.
 const getSample = (prompt:string, framework:string, sample? :string)=>{
     if(sample){
         return prompt.replace('{framework_sample}', sample)
