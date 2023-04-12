@@ -1,54 +1,70 @@
-import { Configuration, OpenAIApi,  }  from "openai";
-import {frameworkSamples} from './samples'
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+import { ChatCompletionRequestMessage, Configuration, CreateChatCompletionRequest, OpenAIApi,  }  from "openai";
 
-type ChatGPTUserInput = {
-    framework : string
-    sample? : string
-    functionality : string
+interface ChatGPTUserInput {
+    description? : string
+    temperature? : string
+    maxTokens? : string
 }
 
 export const openAPIResponse =  async (input : ChatGPTUserInput) => {
-    const templatedPrompt : string = generatePrompt(input)
-    const response  = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: templatedPrompt,
-        temperature: 1,
-        max_tokens: 300,
+
+    const configuration = new Configuration({
+      apiKey: process.env.OPENAI_API_KEY,
     });
-    const completion = response.data.choices[0].text
+    const openai = new OpenAIApi(configuration);
+    const messages : ChatCompletionRequestMessage[]= [
+        {
+          role: 'system',
+          content: 'You are a smart code generation assistant that understands user requirements and generates files in various programming languages, frameworks, and file formats accordingly.'
+        },
+        {
+          role: 'user',
+          content: 'A java spring controler to serve as a payments endpoint for a pet store'
+        },
+        {
+          role: 'assistant',
+          content: `import org.springframework.web.bind.annotation.*;
+          import java.util.HashMap;
+          import java.util.Map;
+          
+          @RestController
+          @RequestMapping("/payments")
+          public class PaymentsController {
+          
+              @PostMapping("/charge")
+              public Map<String, Object> chargeCard(@RequestBody Map<String, Object> paymentMap) {
+                  Double amount = Double.parseDouble(paymentMap.get("amount").toString());
+                  String currency = paymentMap.get("currency").toString();
+                  String token = paymentMap.get("token").toString();
+          
+                  // Charge the card using the payment gateway API
+                  // ...
+          
+                  Map<String, Object> charge = new HashMap<>();
+                  charge.put("amount", amount);
+                  charge.put("currency", currency);
+                  charge.put("status", "approved");
+          
+                  return charge;
+              }
+          }`
+        },
+        {
+          role:'user',
+          content : `${input.description}`
+        } ]
+      
+    const chatCompletionRequest: CreateChatCompletionRequest = {
+        model: 'gpt-3.5-turbo',
+        messages: messages,
+        temperature: 0.8,
+        max_tokens: 2000,
+    };
+
+    const response  = await openai.createChatCompletion(chatCompletionRequest);
+    const completion = response.data.choices
     return completion
     
 }
 
-//Generates the prompt to be fed to the OpenAI call
-const generatePrompt = (userInput : ChatGPTUserInput) =>{
-    const templatePrompt = `create a {framework} component for a menu bar like this: {framework_sample} with ability to {functionality}`
-    const promptWithSample = getSample(templatePrompt, userInput.framework, userInput.sample)
-    return  promptWithSample
-                .replace('{framework}',userInput.framework)
-                .replace('{functionality}', userInput.functionality)
-}   
- 
-//Provides a sample to prompt from a predefined set of samples supporting
-//different frontend frameworks.
-//If sample is provided, then it is used as a first option.
-const getSample = (prompt:string, framework:string, sample? :string)=>{
-    if(sample){
-        return prompt.replace('{framework_sample}', sample)
-    }
-    switch(framework){
-        case 'react':
-            return prompt.replace('{framework_sample}', frameworkSamples.react)
-        case 'angular':
-            return prompt.replace('{framework_sample}', frameworkSamples.angular)
-        case 'vue':
-            return prompt.replace('{framework_sample}', frameworkSamples.vue)
-        default:
-            return prompt.replace('{framework_sample}', frameworkSamples.react)
-    }
-}
 
