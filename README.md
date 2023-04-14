@@ -1,10 +1,18 @@
-# chatgpt-backend
+# ChatGPT Plugin Backend
 
 Plugin that exposes an API to interact with the OpenAI to produce 
-snippets fo code.
-Currently the plugin supports generating code snippets for a couple of 
-frontend frameworks. 
+snippets for code.
+Currently the plugin supports generating code snippets for select frontend frameworks/libraries:
+    *Spring  
+    *Docker
+    *React
 
-## Getting started
+# Getting started
+## Installation
 
-TODO
+1. Run ```sh 
+    yarn add plugin-chatgpt
+    ```
+2. Run ```sh 
+    yarn install 
+    ```
