@@ -15,7 +15,7 @@ export const openAPIResponse =  async (input : ChatGPTUserInput) => {
     const messages : ChatCompletionRequestMessage[]= [
         {
           role: 'system',
-          content: 'You are a smart code generation assistant that understands user requirements and generates files in various programming languages, frameworks, and file formats accordingly.'
+          content: 'You are a helpful assistant.'
         },
         {
           role:'user',
