@@ -10,9 +10,12 @@ Currently the plugin supports generating code snippets for select frontend frame
 # Getting started
 ## Installation
 
-1. Run ```sh 
-    yarn add plugin-chatgpt
-    ```
-2. Run ```sh 
+1. Run 
+```sh 
+    yarn add plugin-chatgpt 
+```
+
+2. Run 
+```sh 
     yarn install 
-    ```
+```
