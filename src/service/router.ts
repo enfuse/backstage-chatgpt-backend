@@ -37,7 +37,7 @@ export async function createRouter(
     response.send({ status: 'ok' });
   });
 
-  router.get('/completion', async (request, response) => {
+  router.get('chat/completions', async (request, response) => {
     const description = request.query.description as string
     const temperature = request.query.temperature as string
     const maxTokens = request.query.maxTokens as string
