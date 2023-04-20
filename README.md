@@ -3,22 +3,15 @@
 Plugin that exposes an API to interact with OpenAI and serve the [frontend](https://github.com/enfuse/backstage-chatgpt-plugin) chatgpt plugin
 
 ## Releases
-## v 1.0.0 
+## v 1.0.1
 - /completions endpoint:  Mirrors the OpenAI chat/completions endpoint by injecting a simple system prompt to the request.
 
 # Getting started
 
-## Installation
-Follow the installation process below. Using `yarn add` causes the plugin to fail
-
-1. Add the dependency to your package.json in packages/app
-
-```json
-    "@enfuse/plugin-chatgpt-backend": "^1.0.0"
-```
-and run 
+# Installation
+Navigate to packages/app and run
 ```sh
-    yarn install
+    yarn add @enfuse/chatgpt-frontend-plugin
 ```
 
 # Configuration
