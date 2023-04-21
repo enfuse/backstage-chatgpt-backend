@@ -11,7 +11,7 @@ Plugin that exposes an API to interact with OpenAI and serve the [frontend](http
 # Installation
 Navigate to packages/app and run
 ```sh
-    yarn add @enfuse/chatgpt-frontend-plugin
+    yarn add @enfuse/plugin-chatgpt-backend
 ```
 
 # Configuration
@@ -26,7 +26,7 @@ export OPENAI_API_KEY=<your-openai-key>
 
 ``` js
 
-import { createRouter } from '@internal/plugin-chatgpt-backend';
+import { createRouter } from '@enfuse/plugin-chatgpt-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 
