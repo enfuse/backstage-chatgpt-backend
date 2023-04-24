@@ -39,8 +39,8 @@ export async function createRouter(
 
   router.get('/completions', async (request, response) => {
     const description = request.query.description as string
-    const temperature = request.query.temperature as string
-    const maxTokens = request.query.maxTokens as string
+    const temperature = Number(request.query.temperature as string)
+    const maxTokens = Number(request.query.maxTokens as string)
 
     const completion = await openAPIResponse({description, temperature, maxTokens})
     response.send({completion: completion})

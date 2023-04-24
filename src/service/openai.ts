@@ -1,16 +1,26 @@
 import { ChatCompletionRequestMessage, Configuration, CreateChatCompletionRequest, OpenAIApi,  }  from "openai";
+import { useApi, configApiRef } from '@backstage/core-plugin-api';
 
 interface ChatGPTUserInput {
     description? : string
-    temperature? : string
-    maxTokens? : string
+    temperature? : number
+    maxTokens? : number
 }
 
-export const openAPIResponse =  async (input : ChatGPTUserInput) => {
+interface OpenAIConfig {
+  apiKey : string
+}
+ const CONFIG_OPENAI_API_KEY = `openai.apiKey`
 
+export const openAPIResponse =  async (input : ChatGPTUserInput) => {
+    const config = useApi(configApiRef);
+    const openAIConfiguration = {
+      apiKey: config.getString(CONFIG_OPENAI_API_KEY),
+    } as OpenAIConfig
     const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: openAIConfiguration.apiKey,
     });
+
     const openai = new OpenAIApi(configuration);
     const messages : ChatCompletionRequestMessage[]= [
         {
@@ -25,8 +35,8 @@ export const openAPIResponse =  async (input : ChatGPTUserInput) => {
     const chatCompletionRequest: CreateChatCompletionRequest = {
         model: 'gpt-3.5-turbo',
         messages: messages,
-        temperature: 0.8,
-        max_tokens: 2000,
+        temperature: input.temperature,
+        max_tokens: input.maxTokens,
     };
 
     const response  = await openai.createChatCompletion(chatCompletionRequest);
