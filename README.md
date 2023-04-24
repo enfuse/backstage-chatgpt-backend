@@ -15,10 +15,14 @@ Navigate to packages/app and run
 ```
 
 # Configuration
-1. This plugin requires credential details. For now set up an environment variable before you run your backstage instace from your shell
+1. This plugin requires an OpenAI API Key. This should be provided in the backstage configuration as shown below:
 
-``` bash
-export OPENAI_API_KEY=<your-openai-key>
+```yml
+//app-config.yml or app-config-local.yml
+
+openai:
+  apiKey: <openai-api-key>
+  
 ```
 
 3. Create a chatgpt.tsx file inside your packages/backend/src/plugins directory and include the following:
