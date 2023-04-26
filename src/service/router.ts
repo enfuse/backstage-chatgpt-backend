@@ -18,16 +18,21 @@ import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
+import { Config } from '@backstage/config';
 
 import { openAPIResponse } from './openai';
 export interface RouterOptions {
   logger: Logger;
+  config: Config;
+
 }
 
 export async function createRouter(
   options: RouterOptions,
+  
+
 ): Promise<express.Router> {
-  const { logger } = options;
+  const { config, logger } = options;
 
   const router = Router();
   router.use(express.json());
@@ -41,8 +46,7 @@ export async function createRouter(
     const description = request.query.description as string
     const temperature = Number(request.query.temperature as string)
     const maxTokens = Number(request.query.maxTokens as string)
-
-    const completion = await openAPIResponse({description, temperature, maxTokens})
+    const completion = await openAPIResponse(config.getString('openai.apiKey'),{description, temperature, maxTokens})
     response.send({completion: completion})
   })
 

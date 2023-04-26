@@ -1,5 +1,4 @@
 import { ChatCompletionRequestMessage, Configuration, CreateChatCompletionRequest, OpenAIApi,  }  from "openai";
-import { useApi, configApiRef } from '@backstage/core-plugin-api';
 
 interface ChatGPTUserInput {
     description? : string
@@ -10,12 +9,10 @@ interface ChatGPTUserInput {
 interface OpenAIConfig {
   apiKey : string
 }
- const CONFIG_OPENAI_API_KEY = `openai.apiKey`
 
-export const openAPIResponse =  async (input : ChatGPTUserInput) => {
-    const config = useApi(configApiRef);
+export const openAPIResponse =  async (apiKey : string ,input : ChatGPTUserInput) => {
     const openAIConfiguration = {
-      apiKey: config.getString(CONFIG_OPENAI_API_KEY),
+      apiKey: apiKey
     } as OpenAIConfig
     const configuration = new Configuration({
       apiKey: openAIConfiguration.apiKey,
