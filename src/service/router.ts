@@ -43,10 +43,12 @@ export async function createRouter(
   });
 
   router.get('/completions', async (request, response) => {
-    const description = request.query.description as string
+    const model = request.query.model as string
+    const systemPrompt = request.query.systemPrompt as string
+    const userPrompt = request.query.userPrompt as string
     const temperature = Number(request.query.temperature as string)
     const maxTokens = Number(request.query.maxTokens as string)
-    const completion = await openAPIResponse(config.getString('openai.apiKey'),{description, temperature, maxTokens})
+    const completion = await openAPIResponse(config.getString('openai.apiKey'),{model, systemPrompt, userPrompt, temperature, maxTokens})
     response.send({completion: completion})
   })
 
