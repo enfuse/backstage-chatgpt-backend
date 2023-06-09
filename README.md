@@ -11,7 +11,8 @@ Plugin that exposes an API to interact with OpenAI and serve the [frontend](http
 # Installation
 Navigate to packages/app and run
 ```sh
-    yarn add @enfuse/plugin-chatgpt-backend
+# From root directory of your Backstage installation
+yarn add --cwd packages/backend @enfuse/plugin-chatgpt-backend
 ```
 
 # Configuration
@@ -24,8 +25,9 @@ openai:
   apiKey: <openai-api-key>
   
 ```
+This can be generated here: [ChatGPT API keys](https://platform.openai.com/account/api-keys).
 
-3. Create a chatgpt.tsx file inside your packages/backend/src/plugins directory and include the following:
+3. Create a `chatgpt.ts` file inside your `packages/backend/src/plugins` directory and include the following:
 
 
 ``` js
@@ -43,19 +45,19 @@ export default async function createPlugin(
 }
 ```
 
-4. Inside your packages/backend/src/index/ts, find the section where backend envrionemnts and routes are set up and include the following:
+4. Inside your `packages/backend/src/index.ts` file, find the section where backend environments and routes are set up and include the following:
 
 ``` js
-import chatGPTBackend from './plugins/chatgpt'
+import chatGPTBackend from './plugins/chatgpt';
 
 ...
-  const chatgptEnv = useHotMemoize(module, () => createEnv('chatgpt-backend'))
+  const chatgptEnv = useHotMemoize(module, () => createEnv('chatgpt-backend'));
 
   apiRouter.use('/chatgpt', await chatGPTBackend(chatgptEnv));
 
 ```
 
-5. test your backend plugin installation by having backstage running and curling the endpoint
+5. Test your backend plugin installation by having backstage running and curling the endpoint
 
 ``` bash
 curl localhost:7007/chatgpt
