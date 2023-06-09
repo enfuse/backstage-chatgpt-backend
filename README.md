@@ -9,7 +9,7 @@ Plugin that exposes an API to interact with OpenAI and serve the [frontend](http
 # Getting started
 
 # Installation
-Navigate to packages/app and run
+Navigate to root of Backstage installation and run
 ```sh
 # From root directory of your Backstage installation
 yarn add --cwd packages/backend @enfuse/plugin-chatgpt-backend
