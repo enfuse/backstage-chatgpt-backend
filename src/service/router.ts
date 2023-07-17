@@ -21,10 +21,10 @@ import { Logger } from 'winston';
 import { Config } from '@backstage/config';
 
 import { openAPIResponse } from './openai';
+
 export interface RouterOptions {
   logger: Logger;
   config: Config;
-
 }
 
 export async function createRouter(
