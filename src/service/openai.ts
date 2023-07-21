@@ -3,18 +3,19 @@ import { ChatCompletionRequestMessage,
    CreateChatCompletionRequest,
    CreateCompletionRequest,
    OpenAIApi}  from "openai";
+import BadRequest from 'http-errors'
 
 interface ChatGPTUserInput {
   model? : string
-  userPrompt? : string
+  messages? : any[]
   temperature? : number
   maxTokens? : number
-  systemPrompt? : string
 }
 
 interface OpenAIConfig {
   apiKey : string
 }
+
 
 export const openAPIResponse =  async (apiKey : string ,input : ChatGPTUserInput) => {
       const openAIConfiguration = {
@@ -26,35 +27,17 @@ export const openAPIResponse =  async (apiKey : string ,input : ChatGPTUserInput
 
       const openai = new OpenAIApi(configuration);
       let response
-      if(input.model == 'chatgpt-3.5-turbo'){
-        const messages : ChatCompletionRequestMessage[] = [
-          {
-            role: 'system',
-            content: `${input.systemPrompt}`
-          },
-          {
-            role:'user',
-            content : `${input.userPrompt}`
-          }]
-        
+      if(input.model == 'gpt-3.5-turbo'){
         const chatCompletionRequest: CreateChatCompletionRequest = {
-            model: `${input.model}`,
-            messages: messages,
+            model: input.model,
+            messages: input.messages,
             temperature: input.temperature,
             max_tokens: input.maxTokens,
         };
         response  = await openai.createChatCompletion(chatCompletionRequest);
-
       }
       else {
-        const completionRequest: CreateCompletionRequest = {
-          model: `${input.model}`,
-          prompt: `${input.userPrompt}`,
-          temperature: input.temperature,
-          max_tokens: input.maxTokens,
-        }
-        response = await openai.createCompletion(completionRequest)
-
+        throw BadRequest("Invalid model")
       }
       const completion = response.data.choices
       return completion

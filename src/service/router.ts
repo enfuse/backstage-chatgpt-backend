@@ -1,18 +1,3 @@
-/*
- * Copyright 2020 The Backstage Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
@@ -44,11 +29,11 @@ export async function createRouter(
 
   router.get('/completions', async (request, response) => {
     const model = request.query.model as string
-    const systemPrompt = request.query.systemPrompt as string
-    const userPrompt = request.query.userPrompt as string
+    const parsedArray = (request.query.messages as []).map(item => JSON.parse(item)) ;
     const temperature = Number(request.query.temperature as string)
     const maxTokens = Number(request.query.maxTokens as string)
-    const completion = await openAPIResponse(config.getString('openai.apiKey'),{model, systemPrompt, userPrompt, temperature, maxTokens})
+    const completion = await openAPIResponse(config.getString('openai.apiKey'),{model, messages:parsedArray, temperature, maxTokens})
+
     response.send({completion: completion})
   })
 
