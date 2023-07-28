@@ -2,11 +2,6 @@
 
 Plugin that exposes an API to interact with OpenAI and serve the [frontend](https://github.com/enfuse/backstage-chatgpt-plugin) chatgpt plugin
 
-## Releases
-## v 1.0.1
-- /completions endpoint:  Mirrors the OpenAI chat/completions endpoint by injecting a simple system prompt to the request.
-
-# Getting started
 
 # Installation
 Navigate to root of Backstage installation and run
@@ -41,6 +36,7 @@ export default async function createPlugin(
 ): Promise<Router> {
   return await createRouter({
     logger: env.logger,
+    config: env.config
   });
 }
 ```
