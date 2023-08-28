@@ -56,6 +56,6 @@ import chatGPTBackend from './plugins/chatgpt';
 5. Test your backend plugin installation by having backstage running and curling the endpoint
 
 ``` bash
-curl localhost:7007/chatgpt
+curl localhost:7007/api/chatgpt/health
 ```
 
